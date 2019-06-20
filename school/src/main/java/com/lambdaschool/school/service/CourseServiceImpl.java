@@ -25,22 +25,39 @@ public class CourseServiceImpl implements CourseService
     }
 
     @Override
+    public Course findCourseById(long courseid) {
+        return courserepos.findById(courseid).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
     public ArrayList<CountStudentsInCourses> getCountStudentsInCourse()
     {
         return courserepos.getCountStudentsInCourse();
     }
 
+    @Override
+    public Course save(Course todo) {
+        return courserepos.save(todo);
+    }
+
+    @Override
+    public Course add(Course course) {
+        return courserepos.save(course);
+    }
+
     @Transactional
     @Override
-    public void delete(long id) throws EntityNotFoundException
+    public void delete(long courseid) throws EntityNotFoundException
     {
-        if (courserepos.findById(id).isPresent())
+        if (courserepos.findById(courseid).isPresent())
         {
-            courserepos.deleteCourseFromStudcourses(id);
-            courserepos.deleteById(id);
+            courserepos.deleteCourseFromStudcourses(courseid);
+            courserepos.deleteById(courseid);
         } else
         {
-            throw new EntityNotFoundException(Long.toString(id));
+            throw new EntityNotFoundException(Long.toString(courseid));
         }
     }
+
+
 }
